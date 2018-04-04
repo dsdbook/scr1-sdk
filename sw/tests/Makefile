@@ -19,7 +19,7 @@ export CROSS_PREFIX ?= riscv64-unknown-elf-
 # Targets
 .PHONY: fpga_sw
 
-fpga_sw: dhrystone21_fpga_arty dhrystone21_fpga_de10lite dhrystone21_fpga_a5
+fpga_sw: dhrystone21_fpga_arty dhrystone21_fpga_de10lite dhrystone21_fpga_de1soc dhrystone21_fpga_a5
 
 dhrystone21_fpga_arty:
 	$(eval export SYS_CLK := 25000000)
@@ -33,6 +33,12 @@ dhrystone21_fpga_de10lite:
 	$(MAKE) -C ./dhry21 ITERATIONS=500 dst_dir=$(root_dir)/../../images/de10lite/scr1 OPT=3lto clean all
 	$(MAKE) -C ./dhry21 ITERATIONS=500 dst_dir=$(root_dir)/../../images/de10lite/scr1 OPT=2 clean all
 
+dhrystone21_fpga_de1soc:
+	$(eval export SYS_CLK := 20000000)
+	$(info de1soc_sys_clk=$(SYS_CLK))
+	$(MAKE) -C ./dhry21 ITERATIONS=500 dst_dir=$(root_dir)/../../images/de1soc/scr1 OPT=3lto clean all
+	$(MAKE) -C ./dhry21 ITERATIONS=500 dst_dir=$(root_dir)/../../images/de1soc/scr1 OPT=2 clean all
+
 dhrystone21_fpga_a5:
 	$(eval export SYS_CLK := 30000000)
 	$(info a5_sys_clk=$(SYS_CLK))
@@ -44,3 +50,5 @@ clean:
 	$(MAKE) -C ./dhry21 dst_dir=$(root_dir)/../../images/arty/scr1 OPT=2 clean
 	$(MAKE) -C ./dhry21 dst_dir=$(root_dir)/../../images/de10lite/scr1 OPT=3lto clean
 	$(MAKE) -C ./dhry21 dst_dir=$(root_dir)/../../images/de10lite/scr1 OPT=2 clean
+	$(MAKE) -C ./dhry21 dst_dir=$(root_dir)/../../images/de1soc/scr1 OPT=3lto clean
+	$(MAKE) -C ./dhry21 dst_dir=$(root_dir)/../../images/de1soc/scr1 OPT=2 clean
